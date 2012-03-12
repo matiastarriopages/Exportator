@@ -1,0 +1,10 @@
+Implementar utilidad que genere un zip(DSHBKP_YYYY-MM-DD-HH-MM-SS) con:
++ Logs
++ Config
++ Data
++ t04custom (Si existen)
++ Custom Icons
++ Web.config.
++ Versión de DS.
++ Machine.config
++ Versión de SO.
