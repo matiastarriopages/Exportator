@@ -1,12 +1,22 @@
 package main;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
 
 public class ConfigurationManager {
 	
 	private static ConfigurationManager instance = null;
-	private String pathDashboards = "E:/Workspace/Dashboards/Dashboards_2.0_HF/DashboardServerWeb";
+	private static String ruta = "./config.xml";
+	private static String separator = "/";
+	
+	private String pathDashboards = "C:/Users/Matias/Desktop/DashboardServerWeb";
 	
 	//DSH DLL
 	private String dashboardsDLL = "/bin/DashboardServer.dll";
@@ -30,8 +40,6 @@ public class ConfigurationManager {
 	//CUSTOM ICONS
 	private String customIcons = "/images/icons/userCustom";
 	
-	private static String separator = "/";
-	
 	//***************METHODS*************//
 	
 	public static ConfigurationManager getInstance(){
@@ -39,6 +47,14 @@ public class ConfigurationManager {
 			instance = new ConfigurationManager();
 		
 		return instance;
+	}
+	
+	public ConfigurationManager(){
+		try {
+			this.cargarConfiguracion();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public List<String> getPaths(){
@@ -61,6 +77,71 @@ public class ConfigurationManager {
 		return paths;
 	}
 	
+	public void guardarConfiguracion() throws Exception{
+		Element configElement = new Element("configuration");
+		Document configDocument = new Document(configElement);
+
+		configElement.addContent(new Element("pathDashboards").addContent(this.getPathDashboards()));
+		
+		configElement.addContent(new Element("config").addContent(this.getConfigDir()));
+		configElement.addContent(new Element("customIcons").addContent(this.getCustomIcons()));
+		configElement.addContent(new Element("dashboardsPanels").addContent(this.getDashboardsDir()));
+		configElement.addContent(new Element("tables").addContent(this.getTablesDir()));
+		configElement.addContent(new Element("DashboardsDLL").addContent(this.getDashboardsDLL()));
+		configElement.addContent(new Element("logs").addContent(this.getLogs()));
+		configElement.addContent(new Element("exceptionLog").addContent(this.getExceptionLog()));
+		configElement.addContent(new Element("sqlLog").addContent(this.getSqlLog()));
+		configElement.addContent(new Element("traceLog").addContent(this.getTraceLog()));
+		configElement.addContent(new Element("webConfig").addContent(this.getWebConfig()));
+		
+		XMLOutputter outputter = new XMLOutputter();
+		try {
+		    File file = new File(ruta);
+		    if(!file.exists()){
+		    	file.createNewFile();
+		    }
+		    
+		    FileWriter writer = new FileWriter(ruta);
+			outputter.output(configDocument, writer);
+			writer.flush();
+            writer.close();
+            
+		} catch (java.io.IOException e) {
+			throw new Exception("Error al escribir el archivo de configuracion. Detalle: " + e.getMessage());
+		}
+		
+		instance = null;
+	}
+	
+	public void cargarConfiguracion() throws Exception{
+		
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			File xmlFile = new File(ruta);
+			if(!xmlFile.exists()){
+				this.guardarConfiguracion();
+			}
+			Document document = (Document) builder.build(xmlFile);
+			Element rootNode = document.getRootElement();
+
+			this.setPathDashboards(rootNode.getChildText("pathDashboards"));
+			
+			this.setConfigDir(rootNode.getChildText("config"));
+			this.setCustomIcons(rootNode.getChildText("customIcons"));
+			this.setDashboardsDir(rootNode.getChildText("dashboardsPanels"));
+			this.setTablesDir(rootNode.getChildText("tables"));
+			this.setDashboardsDLL(rootNode.getChildText("DashboardsDLL"));
+			this.setLogs(rootNode.getChildText("logs"));
+			this.setExceptionLog(rootNode.getChildText("exceptionLog"));
+			this.setSqlLog(rootNode.getChildText("sqlLog"));
+			this.setTraceLog(rootNode.getChildText("traceLog"));
+			this.setWebConfig(rootNode.getChildText("webConfig"));
+			
+		  } catch (Exception e) {
+			  throw new Exception("Error al leer el archivo de configuracion. Detalle: " + e.getMessage());
+		  }
+	}
+	
 	public String getPathDashboards() {
 		return pathDashboards;
 	}
@@ -70,7 +151,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getConfigDir() {
-		return getPathDashboards()+configDir;
+		return configDir;
 	}
 	
 	public void setConfigDir(String configDir) {
@@ -78,7 +159,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getLogs() {
-		return getPathDashboards()+logs;
+		return logs;
 	}
 	
 	public void setLogs(String logs) {
@@ -110,7 +191,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getDashboardsDir() {
-		return getPathDashboards()+dashboardsDir;
+		return dashboardsDir;
 	}
 	
 	public void setDashboardsDir(String dashboardsDir) {
@@ -118,7 +199,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getTablesDir() {
-		return getPathDashboards()+tablesDir;
+		return tablesDir;
 	}
 	
 	public void setTablesDir(String tablesDir) {
@@ -130,7 +211,7 @@ public class ConfigurationManager {
 	}
 
 	public String getWebConfig() {
-		return getPathDashboards()+webConfig;
+		return webConfig;
 	}
 
 	public void setDashboardsDLL(String dashboardsDLL) {
@@ -138,7 +219,7 @@ public class ConfigurationManager {
 	}
 
 	public String getDashboardsDLL() {
-		return getPathDashboards()+dashboardsDLL;
+		return dashboardsDLL;
 	}
 
 	public void setCustomIcons(String customIcons) {
@@ -146,7 +227,6 @@ public class ConfigurationManager {
 	}
 
 	public String getCustomIcons() {
-		return getPathDashboards()+customIcons;
-	}
-	
+		return customIcons;
+	}	
 }

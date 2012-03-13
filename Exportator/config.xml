@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration><pathDashboards>C:/Users/Matias/Desktop/DashboardServerWeb</pathDashboards><config>/config</config><customIcons>/images/icons/userCustom</customIcons><dashboardsPanels>/data/public</dashboardsPanels><tables>/data/public/tables</tables><DashboardsDLL>/bin/DashboardServer.dll</DashboardsDLL><logs>/logs</logs><exceptionLog>/logs/DashboardException.log</exceptionLog><sqlLog>/logs/DashboardSQL.log</sqlLog><traceLog>/logs/DashboardTrace.log</traceLog><webConfig>Web.Config</webConfig></configuration>
