@@ -14,9 +14,8 @@ public class ConfigurationManager {
 	
 	private static ConfigurationManager instance = null;
 	private static String ruta = "./config.xml";
-	private static String separator = "/";
 	
-	private String pathDashboards = "C:/Users/Matias/Desktop/DashboardServerWeb";
+	private String pathDashboards = "E:/Workspace/Dashboards/Dashboards_HF11/DashboardServerWeb";
 	
 	//DSH DLL
 	private String dashboardsDLL = "/bin/DashboardServer.dll";
@@ -25,17 +24,19 @@ public class ConfigurationManager {
 	private String configDir = "/config";
 	
 	//LOGS
-	private String logs = "/logs";
-	private String exceptionLog = "DashboardException.log";
-	private String sqlLog = "DashboardSQL.log";
-	private String traceLog = "DashboardTrace.log";
+	private String exceptionLog = "/logs/DashboardException.log";
+	private String sqlLog = "/logs/DashboardSQL.log";
+	private String traceLog = "/logs/DashboardTrace.log";
 	
 	//PANELS
 	private String dashboardsDir = "/data/public";
-	private String tablesDir = "/data/public/tables";
+	//private String tablesDir = "/data/public/tables";
 	
 	//WEB.CONFIG
-	private String webConfig = "Web.Config";
+	private String webConfig = "/Web.Config";
+	
+	//MACHINE.CONFIG
+	private String machineConfig = System.getenv( "WINDIR" ) + "\\Microsoft.NET\\Framework\\v2.0.50727\\CONFIG\\machine.config";
 	
 	//CUSTOM ICONS
 	private String customIcons = "/images/icons/userCustom";
@@ -64,7 +65,7 @@ public class ConfigurationManager {
 		paths.add(getCustomIcons());
 		
 		paths.add(getDashboardsDir());
-		paths.add(getTablesDir());
+		//paths.add(getTablesDir());
 		
 		paths.add(getDashboardsDLL());
 		
@@ -81,18 +82,18 @@ public class ConfigurationManager {
 		Element configElement = new Element("configuration");
 		Document configDocument = new Document(configElement);
 
-		configElement.addContent(new Element("pathDashboards").addContent(this.getPathDashboards()));
+		//configElement.addContent(new Element("pathDashboards").addContent(this.getPathDashboards()));
 		
 		configElement.addContent(new Element("config").addContent(this.getConfigDir()));
 		configElement.addContent(new Element("customIcons").addContent(this.getCustomIcons()));
 		configElement.addContent(new Element("dashboardsPanels").addContent(this.getDashboardsDir()));
-		configElement.addContent(new Element("tables").addContent(this.getTablesDir()));
+		//configElement.addContent(new Element("tables").addContent(this.getTablesDir()));
 		configElement.addContent(new Element("DashboardsDLL").addContent(this.getDashboardsDLL()));
-		configElement.addContent(new Element("logs").addContent(this.getLogs()));
 		configElement.addContent(new Element("exceptionLog").addContent(this.getExceptionLog()));
 		configElement.addContent(new Element("sqlLog").addContent(this.getSqlLog()));
 		configElement.addContent(new Element("traceLog").addContent(this.getTraceLog()));
 		configElement.addContent(new Element("webConfig").addContent(this.getWebConfig()));
+		configElement.addContent(new Element("machineConfig").addContent(this.getMachineConfig()));
 		
 		XMLOutputter outputter = new XMLOutputter();
 		try {
@@ -124,18 +125,18 @@ public class ConfigurationManager {
 			Document document = (Document) builder.build(xmlFile);
 			Element rootNode = document.getRootElement();
 
-			this.setPathDashboards(rootNode.getChildText("pathDashboards"));
+			//this.setPathDashboards(rootNode.getChildText("pathDashboards"));
 			
 			this.setConfigDir(rootNode.getChildText("config"));
 			this.setCustomIcons(rootNode.getChildText("customIcons"));
 			this.setDashboardsDir(rootNode.getChildText("dashboardsPanels"));
-			this.setTablesDir(rootNode.getChildText("tables"));
+			//this.setTablesDir(rootNode.getChildText("tables"));
 			this.setDashboardsDLL(rootNode.getChildText("DashboardsDLL"));
-			this.setLogs(rootNode.getChildText("logs"));
 			this.setExceptionLog(rootNode.getChildText("exceptionLog"));
 			this.setSqlLog(rootNode.getChildText("sqlLog"));
 			this.setTraceLog(rootNode.getChildText("traceLog"));
 			this.setWebConfig(rootNode.getChildText("webConfig"));
+			this.setMachineConfig(rootNode.getChildText("machineConfig"));
 			
 		  } catch (Exception e) {
 			  throw new Exception("Error al leer el archivo de configuracion. Detalle: " + e.getMessage());
@@ -158,16 +159,8 @@ public class ConfigurationManager {
 		this.configDir = configDir;
 	}
 	
-	public String getLogs() {
-		return logs;
-	}
-	
-	public void setLogs(String logs) {
-		this.logs = logs;
-	}
-	
 	public String getExceptionLog() {
-		return getLogs()+separator+exceptionLog;
+		return exceptionLog;
 	}
 	
 	public void setExceptionLog(String exceptionLog) {
@@ -175,7 +168,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getSqlLog() {
-		return getLogs()+separator+sqlLog;
+		return sqlLog;
 	}
 	
 	public void setSqlLog(String sqlLog) {
@@ -183,7 +176,7 @@ public class ConfigurationManager {
 	}
 	
 	public String getTraceLog() {
-		return getLogs()+separator+traceLog;
+		return traceLog;
 	}
 	
 	public void setTraceLog(String traceLog) {
@@ -198,13 +191,13 @@ public class ConfigurationManager {
 		this.dashboardsDir = dashboardsDir;
 	}
 	
-	public String getTablesDir() {
+	/*public String getTablesDir() {
 		return tablesDir;
 	}
 	
 	public void setTablesDir(String tablesDir) {
 		this.tablesDir = tablesDir;
-	}
+	}*/
 
 	public void setWebConfig(String webConfig) {
 		this.webConfig = webConfig;
@@ -228,5 +221,13 @@ public class ConfigurationManager {
 
 	public String getCustomIcons() {
 		return customIcons;
+	}
+
+	public void setMachineConfig(String machineConfig) {
+		this.machineConfig = machineConfig;
+	}
+
+	public String getMachineConfig() {
+		return machineConfig;
 	}	
 }

@@ -21,7 +21,7 @@ public class ZipManager {
 	
 	public void zip(String dir) throws Exception {
 	    File directory = new File(dir);
-	    ZipOutputStream out = new ZipOutputStream(new FileOutputStream("C:\\DSHBKP_" + getDate() + ".zip"));
+	    ZipOutputStream out = new ZipOutputStream(new FileOutputStream("DSHBKP_" + getDate() + ".zip"));
 	    addDir(directory, out);
 	    out.close();
 	  }
@@ -37,8 +37,8 @@ public class ZipManager {
 	        continue;
 	      }
 	      
-	      FileInputStream in = new FileInputStream(file.getAbsolutePath());
-	      out.putNextEntry(new ZipEntry(file.getAbsolutePath()));
+	      FileInputStream in = new FileInputStream(file.getPath());
+	      out.putNextEntry(new ZipEntry(file.getPath()));
 	      int len;
 	      while ((len = in.read(tmpBuf)) > 0) {
 	        out.write(tmpBuf, 0, len);
