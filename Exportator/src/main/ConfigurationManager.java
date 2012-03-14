@@ -15,8 +15,6 @@ public class ConfigurationManager {
 	private static ConfigurationManager instance = null;
 	private static String ruta = "./config.xml";
 	
-	private String pathDashboards = "E:/Workspace/Dashboards/Dashboards_HF11/DashboardServerWeb";
-	
 	//DSH DLL
 	private String dashboardsDLL = "/bin/DashboardServer.dll";
 	
@@ -82,8 +80,6 @@ public class ConfigurationManager {
 		Element configElement = new Element("configuration");
 		Document configDocument = new Document(configElement);
 
-		//configElement.addContent(new Element("pathDashboards").addContent(this.getPathDashboards()));
-		
 		configElement.addContent(new Element("config").addContent(this.getConfigDir()));
 		configElement.addContent(new Element("customIcons").addContent(this.getCustomIcons()));
 		configElement.addContent(new Element("dashboardsPanels").addContent(this.getDashboardsDir()));
@@ -125,8 +121,6 @@ public class ConfigurationManager {
 			Document document = (Document) builder.build(xmlFile);
 			Element rootNode = document.getRootElement();
 
-			//this.setPathDashboards(rootNode.getChildText("pathDashboards"));
-			
 			this.setConfigDir(rootNode.getChildText("config"));
 			this.setCustomIcons(rootNode.getChildText("customIcons"));
 			this.setDashboardsDir(rootNode.getChildText("dashboardsPanels"));
@@ -141,14 +135,6 @@ public class ConfigurationManager {
 		  } catch (Exception e) {
 			  throw new Exception("Error al leer el archivo de configuracion. Detalle: " + e.getMessage());
 		  }
-	}
-	
-	public String getPathDashboards() {
-		return pathDashboards;
-	}
-	
-	public void setPathDashboards(String pathDashboards) {
-		this.pathDashboards = pathDashboards;
 	}
 	
 	public String getConfigDir() {
