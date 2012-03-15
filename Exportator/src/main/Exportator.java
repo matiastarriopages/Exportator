@@ -4,7 +4,7 @@ import java.awt.TextArea;
 
 public class Exportator {
 	
-	private static String folder = "C:\\Test";
+	private static String folder = "Dashboards";
 	
 	public void startExporting(String DashboardsPath, TextArea textArea){
 		try {

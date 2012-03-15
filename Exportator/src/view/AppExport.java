@@ -8,7 +8,6 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
 
-
 @SuppressWarnings("serial")
 public class AppExport extends JPanel implements ActionListener {
 
@@ -26,7 +25,9 @@ public class AppExport extends JPanel implements ActionListener {
 			      }
 			    }
 			);
-		  
+		  Image im = Toolkit.getDefaultToolkit().getImage("images/ExportIco.jpg");
+		  frame.setIconImage(im);
+		    
 		  frame.getContentPane().add(panel,"Center");
 		  frame.setSize(panel.getPreferredSize());
 		  frame.setVisible(true);
